@@ -4,7 +4,7 @@ use crate::state::{AppState, ChatMessage, ChatRole};
 use anyhow::{Context, Result};
 use archeo::content_analysis::notebooks::notebook::{Notebook, NotebookParserConfig};
 use chrono::Local;
-use crossbeam_channel::{unbounded, Receiver, Sender};
+use crossbeam_channel::{Receiver, Sender, unbounded};
 use eframe::egui;
 use rfd::FileDialog;
 use std::path::{Path, PathBuf};
@@ -311,7 +311,10 @@ impl NotebookChatApp {
         let mut include_all = self.state.selected_cells.len() == area.code_cells.len()
             && self.state.selected_outputs.len() == area.outputs.len();
 
-        if ui.checkbox(&mut include_all, "Include entire notebook").changed() {
+        if ui
+            .checkbox(&mut include_all, "Include entire notebook")
+            .changed()
+        {
             if include_all {
                 self.state.selected_cells = area.code_cells.iter().map(|c| c.id).collect();
                 self.state.selected_outputs = area.outputs.iter().map(|o| o.id.clone()).collect();
@@ -333,7 +336,10 @@ impl NotebookChatApp {
                     .default_open(false)
                     .show(ui, |ui| {
                         let mut selected = self.state.selected_cells.contains(&cell.id);
-                        if ui.checkbox(&mut selected, "Include cell in AI context").changed() {
+                        if ui
+                            .checkbox(&mut selected, "Include cell in AI context")
+                            .changed()
+                        {
                             if selected {
                                 self.state.selected_cells.insert(cell.id);
                             } else {
