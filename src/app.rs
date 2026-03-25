@@ -40,12 +40,12 @@ impl NotebookChatApp {
 
         app.log_event("INFO", "Application started");
 
-        if let Some(path) = startup_notebook {
-            if let Err(err) = app.load_notebook(&path) {
-                app.state.status = format!("Failed to load notebook: {err:#}");
-                let msg = app.state.status.clone();
-                app.log_event("ERROR", &msg);
-            }
+        if let Some(path) = startup_notebook
+            && let Err(err) = app.load_notebook(&path)
+        {
+            app.state.status = format!("Failed to load notebook: {err:#}");
+            let msg = app.state.status.clone();
+            app.log_event("ERROR", &msg);
         }
 
         app
@@ -210,27 +210,24 @@ impl NotebookChatApp {
     }
 
     fn ui_top_bar(&mut self, ui: &mut egui::Ui) {
-        if ui.button("Load Notebook").clicked() {
-            if let Some(path) = FileDialog::new()
+        if ui.button("Load Notebook").clicked()
+            && let Some(path) = FileDialog::new()
                 .add_filter("Jupyter notebook", &["ipynb"])
                 .pick_file()
-            {
-                if let Err(err) = self.load_notebook(&path) {
-                    self.state.status = format!("Load failed: {err:#}");
-                    let msg = self.state.status.clone();
-                    self.log_event("ERROR", &msg);
-                }
-            }
+            && let Err(err) = self.load_notebook(&path)
+        {
+            self.state.status = format!("Load failed: {err:#}");
+            let msg = self.state.status.clone();
+            self.log_event("ERROR", &msg);
         }
 
-        if ui.button("Reload").clicked() {
-            if let Some(path) = self.state.notebook_path.clone() {
-                if let Err(err) = self.load_notebook(&path) {
-                    self.state.status = format!("Reload failed: {err:#}");
-                    let msg = self.state.status.clone();
-                    self.log_event("ERROR", &msg);
-                }
-            }
+        if ui.button("Reload").clicked()
+            && let Some(path) = self.state.notebook_path.clone()
+            && let Err(err) = self.load_notebook(&path)
+        {
+            self.state.status = format!("Reload failed: {err:#}");
+            let msg = self.state.status.clone();
+            self.log_event("ERROR", &msg);
         }
 
         if ui.button("Clear Selection").clicked() {

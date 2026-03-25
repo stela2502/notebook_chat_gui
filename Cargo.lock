@@ -242,6 +242,7 @@ dependencies = [
 [[package]]
 name = "archeo"
 version = "0.2.0"
+source = "git+https://github.com/stela2502/archeo.git#a82022a63f701d55f42981ae44111e8077b21dd0"
 dependencies = [
  "anyhow",
  "clap",
@@ -253,6 +254,7 @@ dependencies = [
  "serde_yaml",
  "strum",
  "strum_macros",
+ "tempfile",
  "walkdir",
 ]
 
